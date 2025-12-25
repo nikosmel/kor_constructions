@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.korconstructions.model.Receipt;
+import com.korconstructions.service.DropboxBackupService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
@@ -29,6 +31,7 @@ public class FileReceiptRepository implements ReceiptRepository {
     private final ObjectMapper objectMapper;
     private final ReadWriteLock lock = new ReentrantReadWriteLock();
     private final AtomicLong idGenerator = new AtomicLong(1);
+    private final DropboxBackupService dropboxBackupService;
 
     @Value("${app.data.directory}")
     private String dataDirectory;
@@ -38,10 +41,12 @@ public class FileReceiptRepository implements ReceiptRepository {
 
     private File file;
 
-    public FileReceiptRepository() {
+    @Autowired
+    public FileReceiptRepository(DropboxBackupService dropboxBackupService) {
         this.objectMapper = new ObjectMapper();
         this.objectMapper.registerModule(new JavaTimeModule());
         this.objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+        this.dropboxBackupService = dropboxBackupService;
     }
 
     @PostConstruct
@@ -52,18 +57,28 @@ public class FileReceiptRepository implements ReceiptRepository {
         }
 
         file = new File(dataDirectory + File.separator + dataFile);
-        if (!file.exists()) {
-            file.createNewFile();
-            writeToFile(new ArrayList<>());
-        } else {
-            List<Receipt> receipts = readFromFile();
-            if (!receipts.isEmpty()) {
-                Long maxId = receipts.stream()
-                        .map(Receipt::getId)
-                        .max(Long::compareTo)
-                        .orElse(0L);
-                idGenerator.set(maxId + 1);
+
+        // Try to restore from Dropbox if local file doesn't exist or is empty
+        if (!file.exists() || file.length() == 0) {
+            if (dropboxBackupService.isEnabled()) {
+                boolean restored = dropboxBackupService.restoreFile(dataFile, file);
+                if (!restored && !file.exists()) {
+                    file.createNewFile();
+                    writeToFile(new ArrayList<>());
+                }
+            } else if (!file.exists()) {
+                file.createNewFile();
+                writeToFile(new ArrayList<>());
             }
+        }
+
+        List<Receipt> receipts = readFromFile();
+        if (!receipts.isEmpty()) {
+            Long maxId = receipts.stream()
+                    .map(Receipt::getId)
+                    .max(Long::compareTo)
+                    .orElse(0L);
+            idGenerator.set(maxId + 1);
         }
     }
 
@@ -162,6 +177,8 @@ public class FileReceiptRepository implements ReceiptRepository {
     private void writeToFile(List<Receipt> receipts) {
         try {
             objectMapper.writerWithDefaultPrettyPrinter().writeValue(file, receipts);
+            // Backup to Dropbox after successful write
+            dropboxBackupService.backupFile(file, dataFile);
         } catch (IOException e) {
             throw new RuntimeException("Error writing to file: " + file.getAbsolutePath(), e);
         }

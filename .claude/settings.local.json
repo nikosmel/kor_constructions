@@ -3,7 +3,9 @@
     "allow": [
       "Bash(chmod:*)",
       "Bash(ls:*)",
-      "Bash(sips:*)"
+      "Bash(sips:*)",
+      "Bash(fly status:*)",
+      "Bash(fly volumes list:*)"
     ]
   }
 }

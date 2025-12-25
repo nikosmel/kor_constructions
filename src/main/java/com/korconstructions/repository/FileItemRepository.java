@@ -4,6 +4,8 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.korconstructions.model.Item;
+import com.korconstructions.service.DropboxBackupService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
@@ -27,6 +29,7 @@ public class FileItemRepository implements ItemRepository {
     private final ObjectMapper objectMapper;
     private final ReadWriteLock lock = new ReentrantReadWriteLock();
     private final AtomicLong idGenerator = new AtomicLong(1);
+    private final DropboxBackupService dropboxBackupService;
 
     @Value("${app.data.directory}")
     private String dataDirectory;
@@ -36,9 +39,11 @@ public class FileItemRepository implements ItemRepository {
 
     private File file;
 
-    public FileItemRepository() {
+    @Autowired
+    public FileItemRepository(DropboxBackupService dropboxBackupService) {
         this.objectMapper = new ObjectMapper();
         this.objectMapper.registerModule(new JavaTimeModule());
+        this.dropboxBackupService = dropboxBackupService;
     }
 
     @PostConstruct
@@ -49,18 +54,28 @@ public class FileItemRepository implements ItemRepository {
         }
 
         file = new File(dataDirectory + File.separator + dataFile);
-        if (!file.exists()) {
-            file.createNewFile();
-            writeToFile(new ArrayList<>());
-        } else {
-            List<Item> items = readFromFile();
-            if (!items.isEmpty()) {
-                Long maxId = items.stream()
-                        .map(Item::getId)
-                        .max(Long::compareTo)
-                        .orElse(0L);
-                idGenerator.set(maxId + 1);
+
+        // Try to restore from Dropbox if local file doesn't exist or is empty
+        if (!file.exists() || file.length() == 0) {
+            if (dropboxBackupService.isEnabled()) {
+                boolean restored = dropboxBackupService.restoreFile(dataFile, file);
+                if (!restored && !file.exists()) {
+                    file.createNewFile();
+                    writeToFile(new ArrayList<>());
+                }
+            } else if (!file.exists()) {
+                file.createNewFile();
+                writeToFile(new ArrayList<>());
             }
+        }
+
+        List<Item> items = readFromFile();
+        if (!items.isEmpty()) {
+            Long maxId = items.stream()
+                    .map(Item::getId)
+                    .max(Long::compareTo)
+                    .orElse(0L);
+            idGenerator.set(maxId + 1);
         }
     }
 
@@ -147,6 +162,8 @@ public class FileItemRepository implements ItemRepository {
     private void writeToFile(List<Item> items) {
         try {
             objectMapper.writerWithDefaultPrettyPrinter().writeValue(file, items);
+            // Backup to Dropbox after successful write
+            dropboxBackupService.backupFile(file, dataFile);
         } catch (IOException e) {
             throw new RuntimeException("Error writing to file: " + file.getAbsolutePath(), e);
         }
