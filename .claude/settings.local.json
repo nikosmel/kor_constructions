@@ -5,7 +5,8 @@
       "Bash(ls:*)",
       "Bash(sips:*)",
       "Bash(fly status:*)",
-      "Bash(fly volumes list:*)"
+      "Bash(fly volumes list:*)",
+      "Bash(fly logs:*)"
     ]
   }
 }
