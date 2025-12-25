@@ -1,0 +1,195 @@
+╔══════════════════════════════════════════════════════════════╗
+║                                                              ║
+║          SHARING DATA BETWEEN TWO LAPTOPS                    ║
+║                   Quick Start Guide                          ║
+║                                                              ║
+╚══════════════════════════════════════════════════════════════╝
+
+
+WHICH METHOD SHOULD YOU USE?
+═══════════════════════════════════════════════════════════════
+
+┌─────────────────────────────────────────────────────────────┐
+│ CLOUD STORAGE (Recommended) ⭐                              │
+│                                                             │
+│ Best for: Different locations, home use, simplicity        │
+│ Setup time: 10 minutes                                      │
+│ Cost: FREE (2-15 GB free storage)                          │
+│                                                             │
+│ Quick Steps:                                                │
+│ 1. Install Dropbox/OneDrive on BOTH laptops (same account) │
+│ 2. Run: setup-cloud-sync.bat on BOTH laptops               │
+│ 3. Use: run-jar.bat (automatically detects cloud)          │
+│                                                             │
+│ ✓ Works anywhere with internet                             │
+│ ✓ Automatic synchronization                                │
+│ ✓ No technical knowledge needed                            │
+│ ✗ Need internet connection                                 │
+│ ✗ Can't use both laptops at same time                      │
+└─────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────┐
+│ SHARED NETWORK FOLDER                                       │
+│                                                             │
+│ Best for: Office network, same location                    │
+│ Setup time: 15 minutes                                      │
+│ Cost: FREE                                                  │
+│                                                             │
+│ Quick Steps:                                                │
+│ 1. Share folder on Laptop 1 (Windows file sharing)         │
+│ 2. Map network drive on Laptop 2                           │
+│ 3. Run: setup-cloud-sync.bat with network path             │
+│                                                             │
+│ ✓ Fast (local network speed)                               │
+│ ✓ No internet needed                                       │
+│ ✓ Free, no cloud account needed                            │
+│ ✗ Both laptops must be on same network                     │
+│ ✗ Laptop 1 must be turned on                               │
+│ ✗ Can't use both laptops at same time                      │
+└─────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────┐
+│ USB DRIVE / MANUAL SYNC                                     │
+│                                                             │
+│ Best for: Occasional sync, no network/internet             │
+│ Setup time: 5 minutes                                       │
+│ Cost: FREE (need USB drive)                                 │
+│                                                             │
+│ Quick Steps:                                                │
+│ 1. Copy 'data' folder to USB after work on Laptop 1        │
+│ 2. Copy from USB to Laptop 2 before work                   │
+│ 3. Remember to sync back!                                   │
+│                                                             │
+│ ✓ Simple and reliable                                      │
+│ ✓ No setup needed                                          │
+│ ✓ Complete control                                         │
+│ ✗ Manual process (easy to forget!)                         │
+│ ✗ Risk of using old data                                   │
+└─────────────────────────────────────────────────────────────┘
+
+
+RECOMMENDED SETUP (Cloud Storage):
+═══════════════════════════════════════════════════════════════
+
+STEP 1: On Laptop 1
+───────────────────
+1. Install Dropbox: https://www.dropbox.com/download
+   (Or OneDrive/Google Drive - free accounts work!)
+
+2. Sign in and wait for sync to complete
+
+3. Double-click: setup-cloud-sync.bat
+
+4. When asked for path, enter:
+   C:\Users\YourName\Dropbox\KorConstructions-Data
+
+5. Done on Laptop 1!
+
+
+STEP 2: On Laptop 2
+───────────────────
+1. Install Dropbox (same account as Laptop 1!)
+
+2. Wait for the folder to sync
+
+3. Copy KorConstructions folder to Laptop 2
+
+4. Double-click: setup-cloud-sync.bat
+
+5. Enter SAME path:
+   C:\Users\YourName\Dropbox\KorConstructions-Data
+
+6. Done!
+
+
+STEP 3: Daily Use
+──────────────────
+Just use: run-jar.bat
+
+It automatically detects cloud mode!
+
+The window will show:
+"[Cloud/Network Mode] Custom data location detected"
+
+
+═══════════════════════════════════════════════════════════════
+IMPORTANT RULES:
+═══════════════════════════════════════════════════════════════
+
+⚠️  NEVER run the app on BOTH laptops at the same time!
+
+Correct Workflow:
+─────────────────
+Laptop 1: Working → Close app → Wait 10 seconds
+         ↓
+Laptop 2: Can now open app → Work → Close
+         ↓
+Laptop 1: Can now open app again
+
+Why wait 10 seconds?
+- Cloud/network needs time to sync files
+- Prevents data conflicts
+
+
+═══════════════════════════════════════════════════════════════
+FILES YOU NEED:
+═══════════════════════════════════════════════════════════════
+
+setup-cloud-sync.bat           ← Run once on each laptop
+run-jar.bat                    ← Use this to start app
+backup-data.bat               ← Run weekly for backup
+SHARED-DATA-GUIDE.md          ← Detailed guide
+
+
+═══════════════════════════════════════════════════════════════
+AFTER SETUP:
+═══════════════════════════════════════════════════════════════
+
+✓ You'll see "data-location.properties" file
+  (Contains your cloud folder path)
+
+✓ run-jar.bat will automatically use cloud mode
+
+✓ Data syncs automatically between laptops
+
+✓ Just remember: One laptop at a time!
+
+
+═══════════════════════════════════════════════════════════════
+TESTING YOUR SETUP:
+═══════════════════════════════════════════════════════════════
+
+1. On Laptop 1:
+   - Start app
+   - Add a test customer "Test Sync"
+   - Close app
+   - Wait 30 seconds
+
+2. On Laptop 2:
+   - Start app
+   - Check if "Test Sync" customer appears
+   - If YES: Setup successful! ✓
+   - If NO: Check cloud folder is syncing
+
+
+═══════════════════════════════════════════════════════════════
+BACKUP REMINDER:
+═══════════════════════════════════════════════════════════════
+
+Even with cloud sync, run backups!
+
+Weekly: Double-click backup-data.bat
+
+Saves to: C:\Backups\KorConstructions\
+
+
+═══════════════════════════════════════════════════════════════
+NEED HELP?
+═══════════════════════════════════════════════════════════════
+
+Read: SHARED-DATA-GUIDE.md (detailed instructions)
+
+Common Issues:
+- "Data not syncing" → Check cloud app is running
+- "File in use" → Close app on other laptop first
+- "Wrong data" → Check you're using same cloud path

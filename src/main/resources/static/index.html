@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+~<html lang="el">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kor Constructions - Σύστημα Διαχείρισης</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Kor Constructions</h1>
+            <p>Σύστημα Διαχείρισης Πελατών & Συναλλαγών</p>
+        </header>
+
+        <!-- Tab Navigation -->
+        <nav class="tabs">
+            <button class="tab-button active" data-tab="customers">Πελάτες</button>
+            <button class="tab-button" data-tab="receipts">Απόδειξη Είσπραξης</button>
+            <button class="tab-button" data-tab="payments">Απόδειξη Πληρωμής</button>
+            <button class="tab-button" data-tab="transactions">Κινήσεις</button>
+        </nav>
+
+        <!-- Tab Content -->
+        <main class="tab-content-wrapper">
+            <!-- Customers Tab -->
+            <div id="customers-tab" class="tab-content active">
+                <div class="page-layout">
+                    <aside class="sidebar">
+                        <h2>Προσθήκη/Επεξεργασία Πελάτη</h2>
+                        <form id="customer-form">
+                            <input type="hidden" id="customer-id">
+
+                            <div class="form-group">
+                                <label for="customer-name">Ονοματεπώνυμο *</label>
+                                <input type="text" id="customer-name" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="customer-phone">Τηλέφωνο</label>
+                                <input type="tel" id="customer-phone">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="customer-email">Email</label>
+                                <input type="email" id="customer-email">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="customer-address">Διεύθυνση</label>
+                                <input type="text" id="customer-address">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="customer-afm">ΑΦΜ</label>
+                                <input type="text" id="customer-afm">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="customer-notes">Σημειώσεις</label>
+                                <textarea id="customer-notes" rows="3"></textarea>
+                            </div>
+
+                            <div class="form-actions">
+                                <button type="submit" class="btn btn-primary" id="customer-submit-btn">Προσθήκη</button>
+                                <button type="button" class="btn btn-secondary" id="customer-cancel-btn" style="display: none;">Ακύρωση</button>
+                            </div>
+                        </form>
+                    </aside>
+
+                    <section class="main-content">
+                        <h2>Λίστα Πελατών</h2>
+                        <div id="customers-container">
+                            <p class="loading">Φόρτωση πελατών...</p>
+                        </div>
+                    </section>
+                </div>
+            </div>
+
+            <!-- Receipts Tab -->
+            <div id="receipts-tab" class="tab-content">
+                <div class="receipt-layout">
+                    <section class="form-section">
+                        <h2>Απόδειξη Είσπραξης</h2>
+                        <form id="receipt-form">
+                            <input type="hidden" id="receipt-id">
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="receipt-customer">Πελάτης *</label>
+                                    <select id="receipt-customer" required>
+                                        <option value="">Επιλέξτε πελάτη</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="receipt-date">Ημερομηνία *</label>
+                                    <input type="date" id="receipt-date" required>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="receipt-number">Αριθμός Απόδειξης *</label>
+                                    <input type="text" id="receipt-number" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="receipt-amount">Ποσό (€) *</label>
+                                    <input type="number" id="receipt-amount" step="0.01" min="0" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="receipt-reason">Αιτία *</label>
+                                <input type="text" id="receipt-reason" required>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="receipt-signature1">Υπογραφή 1</label>
+                                    <input type="text" id="receipt-signature1" placeholder="Όνομα">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="receipt-signature2">Υπογραφή 2</label>
+                                    <input type="text" id="receipt-signature2" placeholder="Όνομα">
+                                </div>
+                            </div>
+
+                            <div class="form-actions">
+                                <button type="submit" class="btn btn-primary" id="receipt-submit-btn">Αποθήκευση</button>
+                                <button type="button" class="btn btn-secondary" id="receipt-print-btn">Εκτύπωση</button>
+                                <button type="button" class="btn btn-secondary" id="receipt-cancel-btn" style="display: none;">Ακύρωση</button>
+                            </div>
+                        </form>
+                    </section>
+
+                    <section class="list-section">
+                        <h2>Αποδείξεις Είσπραξης</h2>
+                        <div id="receipts-container">
+                            <p class="loading">Φόρτωση αποδείξεων...</p>
+                        </div>
+                    </section>
+                </div>
+            </div>
+
+            <!-- Payments Tab -->
+            <div id="payments-tab" class="tab-content">
+                <div class="receipt-layout">
+                    <section class="form-section">
+                        <h2>Απόδειξη Πληρωμής</h2>
+                        <form id="payment-form">
+                            <input type="hidden" id="payment-id">
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="payment-payee">Δικαιούχος *</label>
+                                    <input type="text" id="payment-payee" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="payment-date">Ημερομηνία *</label>
+                                    <input type="date" id="payment-date" required>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="payment-number">Αριθμός Απόδειξης *</label>
+                                    <input type="text" id="payment-number" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="payment-amount">Ποσό (€) *</label>
+                                    <input type="number" id="payment-amount" step="0.01" min="0" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="payment-reason">Αιτία *</label>
+                                <input type="text" id="payment-reason" required>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="payment-signature1">Υπογραφή 1</label>
+                                    <input type="text" id="payment-signature1" placeholder="Όνομα">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="payment-signature2">Υπογραφή 2</label>
+                                    <input type="text" id="payment-signature2" placeholder="Όνομα">
+                                </div>
+                            </div>
+
+                            <div class="form-actions">
+                                <button type="submit" class="btn btn-primary" id="payment-submit-btn">Αποθήκευση</button>
+                                <button type="button" class="btn btn-secondary" id="payment-print-btn">Εκτύπωση</button>
+                                <button type="button" class="btn btn-secondary" id="payment-cancel-btn" style="display: none;">Ακύρωση</button>
+                            </div>
+                        </form>
+                    </section>
+
+                    <section class="list-section">
+                        <h2>Αποδείξεις Πληρωμής</h2>
+                        <div id="payments-container">
+                            <p class="loading">Φόρτωση πληρωμών...</p>
+                        </div>
+                    </section>
+                </div>
+            </div>
+
+            <!-- Transactions Tab -->
+            <div id="transactions-tab" class="tab-content">
+                <h2>Κινήσεις</h2>
+                <div class="transactions-filters">
+                    <div class="filter-group">
+                        <label>
+                            <input type="checkbox" id="filter-receipts" checked> Εισπράξεις
+                        </label>
+                        <label>
+                            <input type="checkbox" id="filter-payments" checked> Πληρωμές
+                        </label>
+                    </div>
+                </div>
+                <div id="transactions-container">
+                    <p class="loading">Φόρτωση κινήσεων...</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Print Template for Receipts -->
+    <div id="print-receipt-template" class="print-only" style="display: none;"></div>
+
+    <!-- Print Template for Payments -->
+    <div id="print-payment-template" class="print-only" style="display: none;"></div>
+
+    <!-- Customer Receipts Modal -->
+    <div id="customer-receipts-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modal-customer-name">Αποδείξεις Πελάτη</h2>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body" id="modal-receipts-list">
+                <p class="loading">Φόρτωση...</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+    <script src="js/customers.js"></script>
+    <script src="js/receipts.js"></script>
+    <script src="js/payments.js"></script>
+    <script src="js/transactions.js"></script>
+</body>
+</html>

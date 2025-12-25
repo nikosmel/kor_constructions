@@ -1,0 +1,98 @@
+╔══════════════════════════════════════════════════════════════╗
+║                                                              ║
+║          KOR CONSTRUCTIONS - MANAGEMENT SYSTEM               ║
+║                                                              ║
+║              Quick Start Guide for Windows                   ║
+║                                                              ║
+╚══════════════════════════════════════════════════════════════╝
+
+FIRST TIME SETUP (3 Minutes):
+═══════════════════════════════════════════════════════════════
+
+1. INSTALL JAVA (if not already installed):
+   ────────────────────────────────────────
+   ► Go to: https://adoptium.net/
+   ► Download: Windows x64, Java 17 or 21
+   ► Install and restart computer
+
+2. START THE APPLICATION:
+   ────────────────────────
+   ► Double-click: run-jar.bat
+   ► Wait 10-15 seconds
+   ► Browser opens automatically!
+
+3. CREATE DESKTOP SHORTCUT (Optional):
+   ───────────────────────────────────────
+   ► Right-click: run-jar.bat
+   ► Choose: "Send to" → "Desktop (create shortcut)"
+   ► Done! Now double-click desktop icon to start
+
+
+═══════════════════════════════════════════════════════════════
+WHAT EACH FILE DOES:
+═══════════════════════════════════════════════════════════════
+
+run-jar.bat                    ← USE THIS! (Starts the app)
+start-app-and-open-browser.bat ← Alternative (needs Maven)
+build-jar.bat                  ← Rebuild if you make changes
+WINDOWS-SETUP.md              ← Detailed instructions
+
+target/                        ← Contains the app (kor-constructions-app-1.0.0.jar)
+data/                          ← YOUR DATA IS SAVED HERE! Backup this folder!
+
+
+═══════════════════════════════════════════════════════════════
+APPLICATION FEATURES:
+═══════════════════════════════════════════════════════════════
+
+✓ Tab 1: Πελάτες (Customers)
+  - Manage all customers
+  - View customer receipts
+
+✓ Tab 2: Απόδειξη Είσπραξης (Collection Receipts)
+  - Create receipts for money received
+  - Printable format
+
+✓ Tab 3: Απόδειξη Πληρωμής (Payment Receipts)
+  - Create receipts for money paid
+  - Printable format
+
+✓ Tab 4: Κινήσεις (Transactions)
+  - View all financial movements
+  - Filter by receipts or payments
+
+
+═══════════════════════════════════════════════════════════════
+IMPORTANT NOTES:
+═══════════════════════════════════════════════════════════════
+
+► URL: http://localhost:8080
+  (This will open automatically when you run the app)
+
+► To STOP the app: Close the black command window
+
+► Your DATA is in the "data" folder
+  ⚠ BACKUP THIS FOLDER REGULARLY!
+
+► Need help? Read: WINDOWS-SETUP.md
+
+
+═══════════════════════════════════════════════════════════════
+TROUBLESHOOTING:
+═══════════════════════════════════════════════════════════════
+
+Problem: "Java is not installed"
+Solution: Install Java from https://adoptium.net/
+
+Problem: Browser doesn't open
+Solution: Manually go to http://localhost:8080
+
+Problem: "Port 8080 in use"
+Solution: Close other Java apps or restart computer
+
+
+═══════════════════════════════════════════════════════════════
+
+Ready to start? Double-click: run-jar.bat
+
+═══════════════════════════════════════════════════════════════
