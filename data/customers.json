@@ -1,11 +1,41 @@
 [ {
   "id" : 1,
-  "name" : "Γιώργος Παπαδόπουλος",
-  "phone" : "2101234567",
-  "email" : "giorgos@example.com",
-  "address" : "Αθήνα",
-  "afm" : "123456789",
-  "notes" : "Τεστ πελάτης",
-  "createdAt" : "2025-12-04 19:15:57",
-  "updatedAt" : "2025-12-04 19:15:57"
+  "name" : "Παναγιωτης Πλακας",
+  "phone" : "",
+  "email" : "",
+  "address" : "",
+  "afm" : "",
+  "notes" : "",
+  "createdAt" : "2025-12-25 23:06:11",
+  "updatedAt" : "2025-12-25 23:06:11"
+}, {
+  "id" : 2,
+  "name" : "Takhs Koroveshs",
+  "phone" : "",
+  "email" : "",
+  "address" : "",
+  "afm" : "",
+  "notes" : "",
+  "createdAt" : "2025-12-25 23:09:27",
+  "updatedAt" : "2025-12-25 23:09:27"
+}, {
+  "id" : 3,
+  "name" : "Hlektrologos",
+  "phone" : "",
+  "email" : "",
+  "address" : "",
+  "afm" : "",
+  "notes" : "",
+  "createdAt" : "2025-12-25 23:18:42",
+  "updatedAt" : "2025-12-25 23:18:42"
+}, {
+  "id" : 4,
+  "name" : "Gupsosanidas",
+  "phone" : "",
+  "email" : "",
+  "address" : "",
+  "afm" : "",
+  "notes" : "",
+  "createdAt" : "2025-12-26 01:36:51",
+  "updatedAt" : "2025-12-26 01:36:51"
 } ]

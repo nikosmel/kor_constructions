@@ -6,7 +6,9 @@
       "Bash(sips:*)",
       "Bash(fly status:*)",
       "Bash(fly volumes list:*)",
-      "Bash(fly logs:*)"
+      "Bash(fly logs:*)",
+      "Bash(mvn clean install:*)",
+      "Bash(mvn:*)"
     ]
   }
 }

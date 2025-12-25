@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initializeTabs();
     initializeModals();
     loadAllData();
+    initializeDropboxSync();
 });
 
 function initializeTabs() {
@@ -107,4 +108,46 @@ function showError(message) {
 function showSuccess(message) {
     // Could be replaced with a toast notification
     console.log('Success:', message);
+}
+
+function initializeDropboxSync() {
+    const syncBtn = document.getElementById('sync-dropbox-btn');
+    if (!syncBtn) return;
+
+    syncBtn.addEventListener('click', async () => {
+        // Disable button during sync
+        syncBtn.disabled = true;
+        syncBtn.textContent = '🔄 Συγχρονισμός...';
+
+        try {
+            const response = await fetch('/api/backup/restore', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                alert('✅ Συγχρονισμός επιτυχής!\n\n' + data.message);
+                // Reload current tab data
+                loadAllData();
+                // Reload all tabs if they have load functions
+                if (typeof loadCustomers === 'function') loadCustomers();
+                if (typeof loadReceipts === 'function') loadReceipts();
+                if (typeof loadPayments === 'function') loadPayments();
+                if (typeof loadTransactions === 'function') loadTransactions();
+            } else {
+                alert('⚠️ Συγχρονισμός αποτυχία:\n\n' + data.message);
+            }
+        } catch (error) {
+            console.error('Sync error:', error);
+            alert('❌ Σφάλμα κατά τον συγχρονισμό:\n\n' + error.message);
+        } finally {
+            // Re-enable button
+            syncBtn.disabled = false;
+            syncBtn.textContent = '📥 Συγχρονισμός Dropbox';
+        }
+    });
 }
