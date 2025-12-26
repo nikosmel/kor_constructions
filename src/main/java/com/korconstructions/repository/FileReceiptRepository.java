@@ -58,18 +58,10 @@ public class FileReceiptRepository implements ReceiptRepository {
 
         file = new File(dataDirectory + File.separator + dataFile);
 
-        // Try to restore from Dropbox if local file doesn't exist or is empty
-        if (!file.exists() || file.length() == 0) {
-            if (dropboxBackupService.isEnabled()) {
-                boolean restored = dropboxBackupService.restoreFile(dataFile, file);
-                if (!restored && !file.exists()) {
-                    file.createNewFile();
-                    writeToFile(new ArrayList<>());
-                }
-            } else if (!file.exists()) {
-                file.createNewFile();
-                writeToFile(new ArrayList<>());
-            }
+        // Create empty file if it doesn't exist (use manual sync button to restore from Dropbox)
+        if (!file.exists()) {
+            file.createNewFile();
+            writeToFile(new ArrayList<>());
         }
 
         List<Receipt> receipts = readFromFile();
