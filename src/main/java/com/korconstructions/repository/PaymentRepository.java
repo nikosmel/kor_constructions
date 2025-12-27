@@ -1,19 +1,11 @@
 package com.korconstructions.repository;
 
 import com.korconstructions.model.Payment;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-import java.util.List;
-import java.util.Optional;
-
-public interface PaymentRepository {
-
-    List<Payment> findAll();
-
-    Optional<Payment> findById(Long id);
-
-    Payment save(Payment payment);
-
-    void deleteById(Long id);
-
-    boolean existsById(Long id);
+@Repository
+public interface PaymentRepository extends JpaRepository<Payment, Long> {
+    // JpaRepository provides: findAll(), findById(), save(), deleteById(), existsById()
+    // No additional methods needed
 }

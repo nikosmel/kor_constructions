@@ -1,19 +1,11 @@
 package com.korconstructions.repository;
 
 import com.korconstructions.model.Customer;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-import java.util.List;
-import java.util.Optional;
-
-public interface CustomerRepository {
-
-    List<Customer> findAll();
-
-    Optional<Customer> findById(Long id);
-
-    Customer save(Customer customer);
-
-    void deleteById(Long id);
-
-    boolean existsById(Long id);
+@Repository
+public interface CustomerRepository extends JpaRepository<Customer, Long> {
+    // JpaRepository provides: findAll(), findById(), save(), deleteById(), existsById()
+    // No additional methods needed
 }
