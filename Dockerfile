@@ -14,11 +14,8 @@ RUN mvn clean package -DskipTests -B
 FROM eclipse-temurin:17-jre-alpine
 WORKDIR /app
 
-# Create data directory for file-based storage
-RUN mkdir -p /app/data
-
 # Copy the JAR file from build stage
-COPY --from=build /app/target/kor-constructions-app-1.0.0.jar app.jar
+COPY --from=build /app/target/kor-constructions-app-2.0.0.jar app.jar
 
 # Expose port 8080
 EXPOSE 8080
