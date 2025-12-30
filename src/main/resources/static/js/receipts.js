@@ -7,16 +7,34 @@ let editingReceiptId = null;
 document.addEventListener('DOMContentLoaded', () => {
     setupReceiptForm();
     loadCustomersForSelect();
+    setupAddReceiptButton();
 });
+
+// Modal Functions
+function openReceiptModal() {
+    resetReceiptForm();
+    document.getElementById('receipt-modal-title').textContent = 'Νέα Απόδειξη Είσπραξης';
+    document.getElementById('receipt-modal').style.display = 'flex';
+}
+
+function closeReceiptModal() {
+    document.getElementById('receipt-modal').style.display = 'none';
+    resetReceiptForm();
+}
+
+function setupAddReceiptButton() {
+    const addBtn = document.getElementById('add-receipt-btn');
+    if (addBtn) {
+        addBtn.addEventListener('click', openReceiptModal);
+    }
+}
 
 function setupReceiptForm() {
     const form = document.getElementById('receipt-form');
     const printBtn = document.getElementById('receipt-print-btn');
-    const cancelBtn = document.getElementById('receipt-cancel-btn');
 
     form.addEventListener('submit', handleReceiptFormSubmit);
     printBtn.addEventListener('click', printCurrentReceipt);
-    cancelBtn.addEventListener('click', resetReceiptForm);
 
     // Set today's date as default
     document.getElementById('receipt-date').valueAsDate = new Date();
@@ -99,7 +117,7 @@ async function handleReceiptFormSubmit(e) {
         } else {
             await createReceipt(receipt);
         }
-        resetReceiptForm();
+        closeReceiptModal();
         loadReceipts();
     } catch (error) {
         console.error('Error saving receipt:', error);
@@ -142,7 +160,8 @@ async function editReceipt(id) {
 
         editingReceiptId = id;
         document.getElementById('receipt-submit-btn').textContent = 'Ενημέρωση';
-        document.getElementById('receipt-cancel-btn').style.display = 'inline-block';
+        document.getElementById('receipt-modal-title').textContent = 'Επεξεργασία Απόδειξης Είσπραξης';
+        document.getElementById('receipt-modal').style.display = 'flex';
     } catch (error) {
         console.error('Error loading receipt:', error);
         showError('Αποτυχία φόρτωσης απόδειξης');
@@ -167,7 +186,6 @@ function resetReceiptForm() {
     document.getElementById('receipt-date').valueAsDate = new Date();
     editingReceiptId = null;
     document.getElementById('receipt-submit-btn').textContent = 'Αποθήκευση';
-    document.getElementById('receipt-cancel-btn').style.display = 'none';
 }
 
 async function printReceipt(id) {

@@ -7,14 +7,31 @@ let editingCustomerId = null;
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
     setupCustomerForm();
+    setupAddCustomerButton();
 });
+
+// Modal Functions
+function openCustomerModal() {
+    resetCustomerForm();
+    document.getElementById('customer-modal-title').textContent = 'Νέος Πελάτης';
+    document.getElementById('customer-modal').style.display = 'flex';
+}
+
+function closeCustomerModal() {
+    document.getElementById('customer-modal').style.display = 'none';
+    resetCustomerForm();
+}
+
+function setupAddCustomerButton() {
+    const addBtn = document.getElementById('add-customer-btn');
+    if (addBtn) {
+        addBtn.addEventListener('click', openCustomerModal);
+    }
+}
 
 function setupCustomerForm() {
     const form = document.getElementById('customer-form');
-    const cancelBtn = document.getElementById('customer-cancel-btn');
-
     form.addEventListener('submit', handleCustomerFormSubmit);
-    cancelBtn.addEventListener('click', resetCustomerForm);
 }
 
 async function loadCustomers() {
@@ -79,7 +96,7 @@ async function handleCustomerFormSubmit(e) {
         } else {
             await createCustomer(customer);
         }
-        resetCustomerForm();
+        closeCustomerModal();
         loadCustomers();
     } catch (error) {
         console.error('Error saving customer:', error);
@@ -122,9 +139,8 @@ async function editCustomer(id) {
 
         editingCustomerId = id;
         document.getElementById('customer-submit-btn').textContent = 'Ενημέρωση';
-        document.getElementById('customer-cancel-btn').style.display = 'inline-block';
-
-        document.querySelector('.sidebar').scrollIntoView({ behavior: 'smooth' });
+        document.getElementById('customer-modal-title').textContent = 'Επεξεργασία Πελάτη';
+        document.getElementById('customer-modal').style.display = 'flex';
     } catch (error) {
         console.error('Error loading customer:', error);
         showError('Αποτυχία φόρτωσης πελάτη');
@@ -147,8 +163,7 @@ async function deleteCustomer(id) {
 function resetCustomerForm() {
     document.getElementById('customer-form').reset();
     editingCustomerId = null;
-    document.getElementById('customer-submit-btn').textContent = 'Προσθήκη';
-    document.getElementById('customer-cancel-btn').style.display = 'none';
+    document.getElementById('customer-submit-btn').textContent = 'Αποθήκευση';
 }
 
 async function viewCustomerReceipts(customerId, customerName) {

@@ -571,3 +571,200 @@ select:focus {
     color: #666;
     margin-bottom: 10px;
 }
+
+/* List Header with Add Button */
+.list-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding: 20px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 10px;
+    color: white;
+}
+
+.list-header h2 {
+    margin: 0;
+    color: white;
+}
+
+/* Dashboard Styles */
+.dashboard-main {
+    padding: 40px 0;
+}
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.dashboard-card {
+    background: white;
+    border-radius: 15px;
+    padding: 40px 30px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    border: 3px solid transparent;
+}
+
+.dashboard-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 40px rgba(102, 126, 234, 0.3);
+    border-color: #667eea;
+}
+
+.dashboard-icon {
+    font-size: 64px;
+    margin-bottom: 20px;
+}
+
+.dashboard-card h2 {
+    color: #667eea;
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+}
+
+.dashboard-card p {
+    color: #666;
+    font-size: 1rem;
+    margin: 0;
+}
+
+/* Back to Dashboard Button */
+.btn-back-dashboard {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+.btn-back-dashboard:hover {
+    background: rgba(255, 255, 255, 0.3);
+    border-color: rgba(255, 255, 255, 0.5);
+    transform: translateY(-2px);
+}
+
+/* Company Form Styles */
+.company-form-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 30px;
+}
+
+.company-form-container h2 {
+    margin-bottom: 30px;
+    color: #667eea;
+}
+
+/* Enhanced Mobile Responsiveness */
+@media (max-width: 1024px) {
+    .header-content {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .header-actions {
+        width: 100%;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+}
+
+/* Mobile Responsive for Dashboard */
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+
+    header h1 {
+        font-size: 2rem;
+    }
+
+    .tabs {
+        padding: 5px;
+        gap: 3px;
+    }
+
+    .tab-button {
+        padding: 12px 10px;
+        font-size: 0.9rem;
+    }
+
+    .tab-content {
+        padding: 15px;
+    }
+
+    .sidebar {
+        position: static;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+
+    .btn {
+        padding: 10px 16px;
+        font-size: 0.9rem;
+    }
+
+    .card-actions {
+        flex-direction: column;
+    }
+
+    .card-actions .btn {
+        width: 100%;
+    }
+
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+        padding: 0 10px;
+    }
+
+    .dashboard-card {
+        padding: 30px 20px;
+    }
+
+    .dashboard-icon {
+        font-size: 48px;
+    }
+
+    .dashboard-card h2 {
+        font-size: 1.3rem;
+    }
+}
+
+@media (max-width: 480px) {
+    header h1 {
+        font-size: 1.5rem;
+    }
+
+    header p {
+        font-size: 0.85rem;
+    }
+
+    .tab-button {
+        padding: 10px 8px;
+        font-size: 0.8rem;
+    }
+
+    .transaction-item {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+
+    .dashboard-main {
+        padding: 20px 0;
+    }
+}

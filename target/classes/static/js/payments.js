@@ -5,16 +5,34 @@ let editingPaymentId = null;
 
 document.addEventListener('DOMContentLoaded', () => {
     setupPaymentForm();
+    setupAddPaymentButton();
 });
+
+// Modal Functions
+function openPaymentModal() {
+    resetPaymentForm();
+    document.getElementById('payment-modal-title').textContent = 'Νέα Απόδειξη Πληρωμής';
+    document.getElementById('payment-modal').style.display = 'flex';
+}
+
+function closePaymentModal() {
+    document.getElementById('payment-modal').style.display = 'none';
+    resetPaymentForm();
+}
+
+function setupAddPaymentButton() {
+    const addBtn = document.getElementById('add-payment-btn');
+    if (addBtn) {
+        addBtn.addEventListener('click', openPaymentModal);
+    }
+}
 
 function setupPaymentForm() {
     const form = document.getElementById('payment-form');
     const printBtn = document.getElementById('payment-print-btn');
-    const cancelBtn = document.getElementById('payment-cancel-btn');
 
     form.addEventListener('submit', handlePaymentFormSubmit);
     printBtn.addEventListener('click', printCurrentPayment);
-    cancelBtn.addEventListener('click', resetPaymentForm);
 
     document.getElementById('payment-date').valueAsDate = new Date();
 }
@@ -79,7 +97,7 @@ async function handlePaymentFormSubmit(e) {
         } else {
             await createPayment(payment);
         }
-        resetPaymentForm();
+        closePaymentModal();
         loadPayments();
     } catch (error) {
         console.error('Error saving payment:', error);
@@ -122,7 +140,8 @@ async function editPayment(id) {
 
         editingPaymentId = id;
         document.getElementById('payment-submit-btn').textContent = 'Ενημέρωση';
-        document.getElementById('payment-cancel-btn').style.display = 'inline-block';
+        document.getElementById('payment-modal-title').textContent = 'Επεξεργασία Απόδειξης Πληρωμής';
+        document.getElementById('payment-modal').style.display = 'flex';
     } catch (error) {
         console.error('Error loading payment:', error);
         showError('Αποτυχία φόρτωσης πληρωμής');
@@ -147,7 +166,6 @@ function resetPaymentForm() {
     document.getElementById('payment-date').valueAsDate = new Date();
     editingPaymentId = null;
     document.getElementById('payment-submit-btn').textContent = 'Αποθήκευση';
-    document.getElementById('payment-cancel-btn').style.display = 'none';
 }
 
 async function printPayment(id) {
