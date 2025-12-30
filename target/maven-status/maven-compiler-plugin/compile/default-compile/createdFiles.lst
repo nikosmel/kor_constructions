@@ -5,8 +5,10 @@ com/korconstructions/model/Customer.class
 com/korconstructions/repository/ItemRepository.class
 com/korconstructions/controller/CustomerController.class
 com/korconstructions/repository/ReceiptRepository.class
+com/korconstructions/model/ReceiptOcrData.class
 com/korconstructions/Application.class
 com/korconstructions/model/Payment.class
+com/korconstructions/service/ReceiptAnalyzerService.class
 com/korconstructions/service/PaymentService.class
 com/korconstructions/model/Receipt.class
 com/korconstructions/service/CustomerService.class
@@ -16,4 +18,5 @@ com/korconstructions/controller/ReceiptController.class
 com/korconstructions/controller/BackupController.class
 com/korconstructions/controller/PaymentController.class
 com/korconstructions/service/ReceiptService.class
+com/korconstructions/controller/ReceiptOCRController.class
 com/korconstructions/controller/ItemController.class

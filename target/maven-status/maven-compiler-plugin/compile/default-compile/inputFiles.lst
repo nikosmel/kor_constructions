@@ -1,5 +1,6 @@
 /Users/elenikorovesi/Downloads/korConstructions/src/main/java/com/korconstructions/repository/ItemRepository.java
 /Users/elenikorovesi/Downloads/korConstructions/src/main/java/com/korconstructions/model/Item.java
+/Users/elenikorovesi/Downloads/korConstructions/src/main/java/com/korconstructions/model/ReceiptOcrData.java
 /Users/elenikorovesi/Downloads/korConstructions/src/main/java/com/korconstructions/model/Receipt.java
 /Users/elenikorovesi/Downloads/korConstructions/src/main/java/com/korconstructions/service/PaymentService.java
 /Users/elenikorovesi/Downloads/korConstructions/src/main/java/com/korconstructions/repository/ReceiptRepository.java
@@ -10,6 +11,8 @@
 /Users/elenikorovesi/Downloads/korConstructions/src/main/java/com/korconstructions/controller/BackupController.java
 /Users/elenikorovesi/Downloads/korConstructions/src/main/java/com/korconstructions/model/Customer.java
 /Users/elenikorovesi/Downloads/korConstructions/src/main/java/com/korconstructions/Application.java
+/Users/elenikorovesi/Downloads/korConstructions/src/main/java/com/korconstructions/service/ReceiptAnalyzerService.java
+/Users/elenikorovesi/Downloads/korConstructions/src/main/java/com/korconstructions/controller/ReceiptOCRController.java
 /Users/elenikorovesi/Downloads/korConstructions/src/main/java/com/korconstructions/controller/PaymentController.java
 /Users/elenikorovesi/Downloads/korConstructions/src/main/java/com/korconstructions/controller/ReceiptController.java
 /Users/elenikorovesi/Downloads/korConstructions/src/main/java/com/korconstructions/service/DropboxBackupService.java
