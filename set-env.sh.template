@@ -1,0 +1,19 @@
+#!/bin/bash
+# Environment setup for Kor Constructions
+#
+# Instructions:
+# 1. Copy this file: cp set-env.sh.template set-env.sh
+# 2. Edit set-env.sh and add your actual API key
+# 3. Run: source set-env.sh
+# 4. Then run: mvn spring-boot:run
+
+# OpenAI API Key - REPLACE WITH YOUR ACTUAL KEY
+export OPENAI_API_KEY="your-openai-api-key-here"
+
+# Database Configuration (optional - uses defaults from application.properties if not set)
+# export DATABASE_URL="jdbc:postgresql://localhost:5432/korconstructions"
+# export DATABASE_USER="elenikorovesi"
+# export DATABASE_PASSWORD=""
+
+echo "✅ Environment variables set!"
+echo "🔑 OPENAI_API_KEY: ${OPENAI_API_KEY:0:20}..."
