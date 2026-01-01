@@ -14,7 +14,7 @@
 
     <groupId>com.korconstructions</groupId>
     <artifactId>kor-constructions-app</artifactId>
-    <version>2.1.0</version>
+    <version>2.2.0</version>
     <name>Kor Constructions</name>
     <description>Local CRUD application with file-based storage</description>
 
@@ -88,6 +88,32 @@
             <groupId>org.springframework.ai</groupId>
             <artifactId>spring-ai-openai-spring-boot-starter</artifactId>
             <version>${spring-ai.version}</version>
+        </dependency>
+
+        <!-- Spring AI PgVector Store for RAG -->
+        <dependency>
+            <groupId>org.springframework.ai</groupId>
+            <artifactId>spring-ai-pgvector-store-spring-boot-starter</artifactId>
+            <version>${spring-ai.version}</version>
+        </dependency>
+
+        <!-- Apache PDFBox for PDF text extraction (2.x for Tika compatibility) -->
+        <dependency>
+            <groupId>org.apache.pdfbox</groupId>
+            <artifactId>pdfbox</artifactId>
+            <version>2.0.31</version>
+        </dependency>
+
+        <!-- Apache Tika for document parsing -->
+        <dependency>
+            <groupId>org.apache.tika</groupId>
+            <artifactId>tika-core</artifactId>
+            <version>2.9.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.tika</groupId>
+            <artifactId>tika-parsers-standard-package</artifactId>
+            <version>2.9.2</version>
         </dependency>
     </dependencies>
 

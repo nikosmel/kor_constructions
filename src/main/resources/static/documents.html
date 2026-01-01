@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kor Constructions - Έγγραφα & AI</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <div class="header-title">
+                    <h1>Kor Constructions</h1>
+                    <p>Διαχείριση Εγγράφων & Έξυπνη Αναζήτηση AI</p>
+                </div>
+                <div class="header-actions">
+                    <button class="btn btn-back-dashboard" onclick="window.location.href='/index.html'">
+                        🏠 Επιστροφή στο Dashboard
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Tab Navigation -->
+        <nav class="tabs">
+            <button class="tab-button active" data-tab="documents">📄 Έγγραφα</button>
+            <button class="tab-button" data-tab="ai-query">🤖 Έξυπνη Αναζήτηση AI</button>
+        </nav>
+
+        <!-- Tab Content -->
+        <main class="tab-content-wrapper">
+            <!-- Documents Tab -->
+            <div id="documents-tab" class="tab-content active">
+                <div class="list-header">
+                    <h2>Λίστα Εγγράφων</h2>
+                    <button class="btn btn-primary" id="add-document-btn">➕ Ανέβασμα Εγγράφου</button>
+                </div>
+
+                <div class="filters" style="padding: 0 30px; margin-bottom: 20px;">
+                    <div class="form-row">
+                        <div class="form-group" style="flex: 1; max-width: 250px;">
+                            <label for="filter-type">Τύπος Εγγράφου</label>
+                            <select id="filter-type">
+                                <option value="">Όλοι οι τύποι</option>
+                                <option value="CONTRACT">Σύμβαση</option>
+                                <option value="INVOICE">Τιμολόγιο</option>
+                                <option value="BLUEPRINT">Σχέδιο</option>
+                                <option value="PERMIT">Άδεια</option>
+                                <option value="TECHNICAL_SPEC">Τεχνική Προδιαγραφή</option>
+                                <option value="INSPECTION_REPORT">Έκθεση Επιθεώρησης</option>
+                                <option value="OTHER">Άλλο</option>
+                            </select>
+                        </div>
+                        <div class="form-group" style="flex: 1; max-width: 250px;">
+                            <label for="filter-building-doc">Κτίριο</label>
+                            <select id="filter-building-doc">
+                                <option value="">Όλα τα κτίρια</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="documents-container" style="padding: 0 30px;">
+                    <p class="loading">Φόρτωση εγγράφων...</p>
+                </div>
+            </div>
+
+            <!-- AI Query Tab -->
+            <div id="ai-query-tab" class="tab-content">
+                <div class="ai-query-section">
+                    <h2>Ρωτήστε το AI για τα Έγγραφά σας</h2>
+                    <p class="ai-info">
+                        Κάντε οποιαδήποτε ερώτηση σχετικά με τα ανεβασμένα έγγραφά σας. Το AI θα αναζητήσει
+                        στο περιεχόμενο όλων των εγγράφων και θα σας δώσει μια απάντηση βασισμένη στα δεδομένα σας.
+                    </p>
+
+                    <div class="form-group" style="max-width: 600px; margin: 30px auto;">
+                        <label for="query-building">Φιλτράρισμα ανά Κτίριο (προαιρετικό)</label>
+                        <select id="query-building">
+                            <option value="">Όλα τα κτίρια</option>
+                        </select>
+                    </div>
+
+                    <div class="ai-query-input">
+                        <textarea id="question-input"
+                                  placeholder="π.χ. Ποια είναι η ημερομηνία λήξης της σύμβασης για το κτίριο Αθήνας?"
+                                  rows="4"></textarea>
+                        <button class="btn btn-primary btn-large" id="ask-question-btn">
+                            🤖 Ρωτήστε το AI
+                        </button>
+                    </div>
+
+                    <div id="ai-answer" class="ai-answer" style="display: none;">
+                        <h3>Απάντηση:</h3>
+                        <div class="answer-content"></div>
+                    </div>
+
+                    <div class="ai-examples">
+                        <h3>Παραδείγματα Ερωτήσεων:</h3>
+                        <ul>
+                            <li>Ποιες είναι οι κύριες υποχρεώσεις του εργολάβου στη σύμβαση;</li>
+                            <li>Πότε λήγει η άδεια οικοδομής;</li>
+                            <li>Ποια υλικά αναφέρονται στην τεχνική προδιαγραφή;</li>
+                            <li>Τι προβλήματα εντοπίστηκαν στην έκθεση επιθεώρησης;</li>
+                            <li>Ποιος είναι ο συνολικός προϋπολογισμός του έργου;</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Document Upload Modal -->
+    <div id="document-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Ανέβασμα Εγγράφου</h2>
+                <button class="modal-close" onclick="closeDocumentModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="document-form" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="document-file">Αρχείο *</label>
+                        <input type="file" id="document-file" accept=".pdf,.doc,.docx,.txt" required>
+                        <small>Υποστηρίζονται: PDF, DOC, DOCX, TXT</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="document-title">Τίτλος *</label>
+                        <input type="text" id="document-title" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="document-description">Περιγραφή</label>
+                        <textarea id="document-description" rows="3"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="document-type">Τύπος Εγγράφου *</label>
+                        <select id="document-type" required>
+                            <option value="">Επιλέξτε τύπο...</option>
+                            <option value="CONTRACT">Σύμβαση</option>
+                            <option value="INVOICE">Τιμολόγιο</option>
+                            <option value="BLUEPRINT">Σχέδιο</option>
+                            <option value="PERMIT">Άδεια</option>
+                            <option value="TECHNICAL_SPEC">Τεχνική Προδιαγραφή</option>
+                            <option value="INSPECTION_REPORT">Έκθεση Επιθεώρησης</option>
+                            <option value="OTHER">Άλλο</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="document-building">Κτίριο (προαιρετικό)</label>
+                        <select id="document-building">
+                            <option value="">Χωρίς συσχέτιση κτιρίου</option>
+                        </select>
+                    </div>
+
+                    <div class="modal-actions">
+                        <button type="button" class="btn btn-secondary" onclick="closeDocumentModal()">
+                            Ακύρωση
+                        </button>
+                        <button type="submit" class="btn btn-primary">
+                            📤 Ανέβασμα & Επεξεργασία AI
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/documents.js"></script>
+</body>
+</html>
