@@ -14,8 +14,8 @@ RUN mvn clean package -DskipTests -B
 FROM eclipse-temurin:17-jre-alpine
 WORKDIR /app
 
-# Copy the JAR file from build stage
-COPY --from=build /app/target/kor-constructions-app-2.0.0.jar app.jar
+# Copy the JAR file from build stage (using wildcard to avoid version mismatch)
+COPY --from=build /app/target/kor-constructions-app-*.jar app.jar
 
 # Expose port 8080
 EXPOSE 8080
