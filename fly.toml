@@ -16,6 +16,10 @@ primary_region = 'fra'
   min_machines_running = 0
   processes = ['app']
 
+[mounts]
+  source = "kor_data"
+  destination = "/app/uploads"
+
 [[vm]]
   memory = '1gb'
   cpu_kind = 'shared'
