@@ -13,7 +13,9 @@
       "Bash(python3:*)",
       "Bash(JAVA_HOME=/opt/homebrew/opt/openjdk@17 mvn clean install:*)",
       "Bash(psql:*)",
-      "Bash(JAVA_HOME=/opt/homebrew/opt/openjdk@17 mvn clean package:*)"
+      "Bash(JAVA_HOME=/opt/homebrew/opt/openjdk@17 mvn clean package:*)",
+      "Bash(java -version:*)",
+      "Bash(JAVA_HOME=/home/nikosm/.sdkman/candidates/java/current mvn clean package:*)"
     ]
   }
 }

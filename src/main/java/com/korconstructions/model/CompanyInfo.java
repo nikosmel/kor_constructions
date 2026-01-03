@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import jakarta.persistence.*;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Data
@@ -34,6 +35,10 @@ public class CompanyInfo {
     private String description;
 
     private String logoPath;
+
+    // Financial fields
+    private BigDecimal startingCapital;
+    private BigDecimal squareMeters;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime updatedAt;

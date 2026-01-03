@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kor Constructions - Οικονομικά Στοιχεία</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <div class="header-title">
+                    <h1>Kor Constructions</h1>
+                    <p>Οικονομικά Στοιχεία & Ανάλυση</p>
+                </div>
+                <div class="header-actions">
+                    <button class="btn btn-back-dashboard" onclick="window.location.href='/index.html'">
+                        🏠 Επιστροφή στο Dashboard
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <main class="tab-content-wrapper">
+            <div class="tab-content active">
+                <!-- Financial Summary Section -->
+                <div class="company-form-container">
+                    <h2>📊 Οικονομική Επισκόπηση</h2>
+
+                    <!-- Editable Fields Section -->
+                    <div class="form-section" style="background: #f8f9fa; padding: 25px; border-radius: 10px; margin-bottom: 30px;">
+                        <h3 style="margin-bottom: 20px; color: #667eea;">Βασικές Παράμετροι</h3>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="starting-capital">Αρχικό Κεφάλαιο (€)</label>
+                                <input type="number" id="starting-capital" step="0.01" min="0" placeholder="0.00">
+                            </div>
+                            <div class="form-group">
+                                <label for="square-meters">Τετραγωνικά Μέτρα (m²)</label>
+                                <input type="number" id="square-meters" step="0.01" min="0.01" placeholder="0.00">
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button id="save-settings-btn" class="btn btn-primary">💾 Αποθήκευση</button>
+                        </div>
+                    </div>
+
+                    <!-- Calculated Fields Section -->
+                    <div class="form-section" style="background: white; padding: 25px; border-radius: 10px; margin-bottom: 30px; border: 2px solid #e0e0e0;">
+                        <h3 style="margin-bottom: 20px; color: #667eea;">Υπολογισμοί</h3>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Συνολικά Έξοδα (€)</label>
+                                <input type="text" id="total-expenses" readonly style="background: #f0f0f0; cursor: not-allowed;" placeholder="0,00 €">
+                            </div>
+                            <div class="form-group">
+                                <label>Κόστος ανά Τετραγωνικό Μέτρο (€/m²)</label>
+                                <div style="display: flex; gap: 10px;">
+                                    <input type="text" id="cost-per-sqm" readonly style="background: #f0f0f0; cursor: not-allowed; flex: 1;" placeholder="0,00 €/m²">
+                                    <button id="calculate-btn" class="btn btn-secondary">🧮 Υπολογισμός</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Transactions List Section -->
+                    <div class="form-section">
+                        <div class="list-header">
+                            <h2 style="color: white;">📋 Λίστα Συναλλαγών</h2>
+                            <div style="font-size: 0.9rem; display: flex; gap: 20px; align-items: center;">
+                                <label style="display: flex; align-items: center; gap: 5px; cursor: pointer; background: white; padding: 8px 15px; border-radius: 8px; color: #4CAF50; font-weight: 600;">
+                                    <input type="checkbox" id="filter-receipts" checked style="cursor: pointer;">
+                                    ✓ Εισπράξεις
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 5px; cursor: pointer; background: white; padding: 8px 15px; border-radius: 8px; color: #FF5722; font-weight: 600;">
+                                    <input type="checkbox" id="filter-payments" checked style="cursor: pointer;">
+                                    ✓ Πληρωμές
+                                </label>
+                            </div>
+                        </div>
+                        <div id="transactions-container"></div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/app.js"></script>
+    <script src="js/financials.js"></script>
+</body>
+</html>

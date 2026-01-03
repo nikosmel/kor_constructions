@@ -1,21 +1,26 @@
 package com.korconstructions.service;
 
+import com.korconstructions.dto.FinancialSummaryDTO;
 import com.korconstructions.model.CompanyInfo;
+import com.korconstructions.model.Payment;
 import com.korconstructions.repository.CompanyInfoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Service
 public class CompanyInfoService {
 
     private final CompanyInfoRepository companyInfoRepository;
+    private final PaymentService paymentService;
 
     @Autowired
-    public CompanyInfoService(CompanyInfoRepository companyInfoRepository) {
+    public CompanyInfoService(CompanyInfoRepository companyInfoRepository, PaymentService paymentService) {
         this.companyInfoRepository = companyInfoRepository;
+        this.paymentService = paymentService;
     }
 
     @Transactional(readOnly = true)
@@ -54,8 +59,27 @@ public class CompanyInfoService {
         existing.setEmail(companyInfo.getEmail());
         existing.setWebsite(companyInfo.getWebsite());
         existing.setDescription(companyInfo.getDescription());
+        existing.setStartingCapital(companyInfo.getStartingCapital());
+        existing.setSquareMeters(companyInfo.getSquareMeters());
         existing.setUpdatedAt(LocalDateTime.now());
 
         return companyInfoRepository.save(existing);
+    }
+
+    @Transactional(readOnly = true)
+    public FinancialSummaryDTO getFinancialSummary() {
+        CompanyInfo companyInfo = getCompanyInfo();
+
+        // Calculate total expenses from all payments
+        BigDecimal totalExpenses = paymentService.getAllPayments()
+                .stream()
+                .map(Payment::getAmount)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        return new FinancialSummaryDTO(
+                companyInfo.getStartingCapital(),
+                companyInfo.getSquareMeters(),
+                totalExpenses
+        );
     }
 }

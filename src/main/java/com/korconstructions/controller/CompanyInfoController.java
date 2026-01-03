@@ -1,5 +1,6 @@
 package com.korconstructions.controller;
 
+import com.korconstructions.dto.FinancialSummaryDTO;
 import com.korconstructions.model.CompanyInfo;
 import com.korconstructions.service.CompanyInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,5 +27,10 @@ public class CompanyInfoController {
     public ResponseEntity<CompanyInfo> updateCompanyInfo(@RequestBody CompanyInfo companyInfo) {
         CompanyInfo updated = companyInfoService.updateCompanyInfo(companyInfo);
         return ResponseEntity.ok(updated);
+    }
+
+    @GetMapping("/financial-summary")
+    public ResponseEntity<FinancialSummaryDTO> getFinancialSummary() {
+        return ResponseEntity.ok(companyInfoService.getFinancialSummary());
     }
 }
