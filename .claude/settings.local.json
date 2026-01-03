@@ -15,7 +15,11 @@
       "Bash(psql:*)",
       "Bash(JAVA_HOME=/opt/homebrew/opt/openjdk@17 mvn clean package:*)",
       "Bash(java -version:*)",
-      "Bash(JAVA_HOME=/home/nikosm/.sdkman/candidates/java/current mvn clean package:*)"
+      "Bash(JAVA_HOME=/home/nikosm/.sdkman/candidates/java/current mvn clean package:*)",
+      "Bash(~/.fly/bin/fly logs:*)",
+      "Bash(~/.fly/bin/fly ssh console:*)",
+      "Bash(~/.fly/bin/fly secrets:*)",
+      "Bash(~/.fly/bin/fly status)"
     ]
   }
 }

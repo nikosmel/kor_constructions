@@ -257,6 +257,15 @@ function openFloorModal() {
 function closeFloorModal() {
     document.getElementById('floor-modal').style.display = 'none';
     resetFloorForm();
+
+    // Hide and reset notes section
+    const notesSection = document.getElementById('floor-notes-section');
+    if (notesSection) {
+        notesSection.style.display = 'none';
+    }
+    if (typeof resetNoteForm === 'function') {
+        resetNoteForm();
+    }
 }
 
 function setupAddFloorButton() {
@@ -430,6 +439,9 @@ async function editFloor(id) {
             document.getElementById('floor-submit-btn').textContent = 'Ενημέρωση';
             document.getElementById('floor-modal-title').textContent = 'Επεξεργασία Διαμερίσματος';
             document.getElementById('floor-modal').style.display = 'flex';
+
+            // Load notes for this floor
+            openFloorNoteEditor(id);
         }, 100);
     } catch (error) {
         console.error('Error loading floor:', error);

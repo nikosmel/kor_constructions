@@ -2,47 +2,33 @@ package com.korconstructions.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import jakarta.persistence.*;
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "floors")
-public class Floor {
+@Table(name = "floor_notes")
+public class FloorNote {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String floorNumber; // e.g., "1", "2", "Basement", "Penthouse"
+    private String title;
+
+    @Column(length = 2000)
     private String description;
-    private BigDecimal squareMeters;
-    private BigDecimal price;
-
-    @Column(length = 1000)
-    private String details;
-
-    private String imagePath; // Path to uploaded image
 
     @ManyToOne
-    @JoinColumn(name = "building_id", nullable = false)
+    @JoinColumn(name = "floor_id", nullable = false)
     @JsonBackReference
-    private Building building;
-
-    @OneToMany(mappedBy = "floor", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
-    private List<FloorNote> notes = new ArrayList<>();
+    private Floor floor;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdAt;
