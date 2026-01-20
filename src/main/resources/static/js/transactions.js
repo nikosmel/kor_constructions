@@ -16,8 +16,8 @@ function setupTransactionFilters() {
 async function loadTransactions() {
     try {
         const [receiptsRes, paymentsRes] = await Promise.all([
-            fetch('/api/receipts'),
-            fetch('/api/payments')
+            fetch(RECEIPTS_API),
+            fetch(PAYMENTS_API)
         ]);
 
         const receipts = await receiptsRes.json();
@@ -58,7 +58,7 @@ function displayTransactions(transactions) {
 
     container.innerHTML = transactions.map(t => {
         const isReceipt = t.type === 'receipt';
-        const name = isReceipt ? t.customerName : t.payeeName;
+        const name = isReceipt ? t.customerName : (t.customerName || t.payeeName);
         const number = isReceipt ? t.receiptNumber : t.paymentNumber;
 
         return `

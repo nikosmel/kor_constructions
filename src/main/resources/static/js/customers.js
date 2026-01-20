@@ -1,6 +1,5 @@
 // Customers management
-const CUSTOMERS_API = '/api/customers';
-const RECEIPTS_API = '/api/receipts';
+// API constants are defined in app.js
 
 let editingCustomerId = null;
 

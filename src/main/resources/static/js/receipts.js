@@ -1,11 +1,11 @@
 // Receipts management
-const RECEIPTS_API_BASE = '/api/receipts';
+// API constants are defined in app.js
 
 let editingReceiptId = null;
 
 document.addEventListener('DOMContentLoaded', () => {
     setupReceiptForm();
-    loadCustomersForSelect();
+    loadCustomersForSelect('receipt-customer');
     setupAddReceiptButton();
 });
 
@@ -21,7 +21,7 @@ async function openReceiptModal() {
 
 async function loadNextReceiptNumber() {
     try {
-        const response = await fetch(`${RECEIPTS_API_BASE}/next-number`);
+        const response = await fetch(`${RECEIPTS_API}/next-number`);
         const nextNumber = await response.text();
         document.getElementById('receipt-number').value = nextNumber;
         // Make it read-only to prevent manual editing
@@ -68,22 +68,9 @@ function setupReceiptForm() {
     }
 }
 
-async function loadCustomersForSelect() {
-    try {
-        const response = await fetch(CUSTOMERS_API_BASE);
-        const customers = await response.json();
-        
-        const select = document.getElementById('receipt-customer');
-        select.innerHTML = '<option value="">Επιλέξτε πελάτη</option>' +
-            customers.map(c => `<option value="${c.id}" data-name="${escapeHtml(c.name)}">${escapeHtml(c.name)}</option>`).join('');
-    } catch (error) {
-        console.error('Error loading customers:', error);
-    }
-}
-
 async function loadReceipts() {
     try {
-        const response = await fetch(RECEIPTS_API_BASE);
+        const response = await fetch(RECEIPTS_API);
         const receipts = await response.json();
         displayReceipts(receipts);
     } catch (error) {
@@ -154,7 +141,7 @@ async function handleReceiptFormSubmit(e) {
 }
 
 async function createReceipt(receipt) {
-    const response = await fetch(RECEIPTS_API_BASE, {
+    const response = await fetch(RECEIPTS_API, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(receipt)
@@ -164,7 +151,7 @@ async function createReceipt(receipt) {
 }
 
 async function updateReceipt(id, receipt) {
-    const response = await fetch(`${RECEIPTS_API_BASE}/${id}`, {
+    const response = await fetch(`${RECEIPTS_API}/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(receipt)
@@ -175,7 +162,7 @@ async function updateReceipt(id, receipt) {
 
 async function editReceipt(id) {
     try {
-        const response = await fetch(`${RECEIPTS_API_BASE}/${id}`);
+        const response = await fetch(`${RECEIPTS_API}/${id}`);
         const receipt = await response.json();
 
         document.getElementById('receipt-customer').value = receipt.customerId;
@@ -200,7 +187,7 @@ async function deleteReceipt(id) {
     if (!confirm('Διαγραφή απόδειξης;')) return;
 
     try {
-        const response = await fetch(`${RECEIPTS_API_BASE}/${id}`, { method: 'DELETE' });
+        const response = await fetch(`${RECEIPTS_API}/${id}`, { method: 'DELETE' });
         if (!response.ok) throw new Error('Failed to delete receipt');
         loadReceipts();
     } catch (error) {
@@ -220,7 +207,7 @@ function resetReceiptForm() {
 
 async function printReceipt(id) {
     try {
-        const response = await fetch(`${RECEIPTS_API_BASE}/${id}`);
+        const response = await fetch(`${RECEIPTS_API}/${id}`);
         const receipt = await response.json();
         generatePrintableReceipt(receipt);
         window.print();

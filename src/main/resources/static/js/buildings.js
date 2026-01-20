@@ -1,7 +1,7 @@
 // Buildings and Floors management
 const BUILDINGS_API = '/api/buildings';
 const FLOORS_API = '/api/floors';
-const CUSTOMERS_API = '/api/customers';
+// CUSTOMERS_API is defined in app.js
 
 let editingBuildingId = null;
 let editingFloorId = null;

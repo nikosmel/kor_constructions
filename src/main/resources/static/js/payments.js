@@ -1,11 +1,11 @@
 // Payments management
-const PAYMENTS_API_BASE = '/api/payments';
+// API constants are defined in app.js
 
 let editingPaymentId = null;
 
 document.addEventListener('DOMContentLoaded', () => {
     setupPaymentForm();
-    loadCustomersForSelect();
+    loadCustomersForSelect('payment-customer');
     setupAddPaymentButton();
 });
 
@@ -21,7 +21,7 @@ async function openPaymentModal() {
 
 async function loadNextPaymentNumber() {
     try {
-        const response = await fetch(`${PAYMENTS_API_BASE}/next-number`);
+        const response = await fetch(`${PAYMENTS_API}/next-number`);
         const nextNumber = await response.text();
         document.getElementById('payment-number').value = nextNumber;
         // Make it read-only to prevent manual editing
@@ -68,22 +68,9 @@ function setupPaymentForm() {
     }
 }
 
-async function loadCustomersForSelect() {
-    try {
-        const response = await fetch(CUSTOMERS_API_BASE);
-        const customers = await response.json();
-
-        const select = document.getElementById('payment-customer');
-        select.innerHTML = '<option value="">Επιλέξτε πελάτη</option>' +
-            customers.map(c => `<option value="${c.id}" data-name="${escapeHtml(c.name)}">${escapeHtml(c.name)}</option>`).join('');
-    } catch (error) {
-        console.error('Error loading customers:', error);
-    }
-}
-
 async function loadPayments() {
     try {
-        const response = await fetch(PAYMENTS_API_BASE);
+        const response = await fetch(PAYMENTS_API);
         const payments = await response.json();
         displayPayments(payments);
     } catch (error) {
@@ -154,7 +141,7 @@ async function handlePaymentFormSubmit(e) {
 }
 
 async function createPayment(payment) {
-    const response = await fetch(PAYMENTS_API_BASE, {
+    const response = await fetch(PAYMENTS_API, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payment)
@@ -164,7 +151,7 @@ async function createPayment(payment) {
 }
 
 async function updatePayment(id, payment) {
-    const response = await fetch(`${PAYMENTS_API_BASE}/${id}`, {
+    const response = await fetch(`${PAYMENTS_API}/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payment)
@@ -175,7 +162,7 @@ async function updatePayment(id, payment) {
 
 async function editPayment(id) {
     try {
-        const response = await fetch(`${PAYMENTS_API_BASE}/${id}`);
+        const response = await fetch(`${PAYMENTS_API}/${id}`);
         const payment = await response.json();
 
         document.getElementById('payment-customer').value = payment.customerId;
@@ -200,7 +187,7 @@ async function deletePayment(id) {
     if (!confirm('Διαγραφή πληρωμής;')) return;
 
     try {
-        const response = await fetch(`${PAYMENTS_API_BASE}/${id}`, { method: 'DELETE' });
+        const response = await fetch(`${PAYMENTS_API}/${id}`, { method: 'DELETE' });
         if (!response.ok) throw new Error('Failed to delete payment');
         loadPayments();
     } catch (error) {
@@ -220,7 +207,7 @@ function resetPaymentForm() {
 
 async function printPayment(id) {
     try {
-        const response = await fetch(`${PAYMENTS_API_BASE}/${id}`);
+        const response = await fetch(`${PAYMENTS_API}/${id}`);
         const payment = await response.json();
         generatePrintablePayment(payment);
         window.print();

@@ -1,13 +1,31 @@
 // Main application file - handles tab switching and initialization
 
 // Shared API endpoints
-const CUSTOMERS_API_BASE = '/api/customers';
+const CUSTOMERS_API = '/api/customers';
+const RECEIPTS_API = '/api/receipts';
+const PAYMENTS_API = '/api/payments';
 
 document.addEventListener('DOMContentLoaded', () => {
     initializeTabs();
     initializeModals();
     loadAllData();
 });
+
+// Shared function to load customers into a select element
+async function loadCustomersForSelect(selectId) {
+    try {
+        const response = await fetch(CUSTOMERS_API);
+        const customers = await response.json();
+
+        const select = document.getElementById(selectId);
+        if (select) {
+            select.innerHTML = '<option value="">Επιλέξτε πελάτη</option>' +
+                customers.map(c => `<option value="${c.id}" data-name="${escapeHtml(c.name)}">${escapeHtml(c.name)}</option>`).join('');
+        }
+    } catch (error) {
+        console.error('Error loading customers:', error);
+    }
+}
 
 function initializeTabs() {
     const tabButtons = document.querySelectorAll('.tab-button');
@@ -32,10 +50,11 @@ function initializeTabs() {
                     break;
                 case 'receipts':
                     if (typeof loadReceipts === 'function') loadReceipts();
-                    if (typeof loadCustomersForSelect === 'function') loadCustomersForSelect();
+                    loadCustomersForSelect('receipt-customer');
                     break;
                 case 'payments':
                     if (typeof loadPayments === 'function') loadPayments();
+                    loadCustomersForSelect('payment-customer');
                     break;
                 case 'transactions':
                     if (typeof loadTransactions === 'function') loadTransactions();
@@ -47,7 +66,10 @@ function initializeTabs() {
 
 function initializeModals() {
     const modal = document.getElementById('customer-receipts-modal');
+    if (!modal) return; // Modal doesn't exist on all pages
+
     const closeBtn = modal.querySelector('.modal-close');
+    if (!closeBtn) return;
 
     closeBtn.addEventListener('click', () => {
         modal.style.display = 'none';

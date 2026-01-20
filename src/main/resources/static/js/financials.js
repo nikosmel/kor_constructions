@@ -1,8 +1,7 @@
 // API Endpoints
 const COMPANY_API = '/api/company';
 const FINANCIAL_SUMMARY_API = '/api/company/financial-summary';
-const PAYMENTS_API = '/api/payments';
-const RECEIPTS_API = '/api/receipts';
+// PAYMENTS_API and RECEIPTS_API are defined in app.js
 
 // State
 let companyData = null;
