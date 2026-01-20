@@ -20,7 +20,9 @@ public class Payment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String payeeName; // Person/Company we're paying to
+    private Long customerId;
+    private String customerName; // Denormalized for display
+    private String payeeName; // Person/Company we're paying to (kept for backward compatibility)
 
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate date;

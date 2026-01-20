@@ -28,7 +28,36 @@ public class PaymentService {
 
     public Payment createPayment(Payment payment) {
         payment.setId(null);
+
+        // Auto-generate payment number if not provided
+        if (payment.getPaymentNumber() == null || payment.getPaymentNumber().trim().isEmpty()) {
+            payment.setPaymentNumber(generateNextPaymentNumber());
+        }
+
         return paymentRepository.save(payment);
+    }
+
+    private String generateNextPaymentNumber() {
+        Optional<Payment> lastPayment = paymentRepository.findTopByOrderByIdDesc();
+
+        if (lastPayment.isPresent() && lastPayment.get().getPaymentNumber() != null) {
+            String lastNumber = lastPayment.get().getPaymentNumber();
+            try {
+                // Try to parse as integer and increment
+                int number = Integer.parseInt(lastNumber);
+                return String.valueOf(number + 1);
+            } catch (NumberFormatException e) {
+                // If not a number, try to extract number from end
+                String digits = lastNumber.replaceAll("\\D+", "");
+                if (!digits.isEmpty()) {
+                    int number = Integer.parseInt(digits);
+                    return String.valueOf(number + 1);
+                }
+            }
+        }
+
+        // Default starting number
+        return "1";
     }
 
     public Payment updatePayment(Long id, Payment payment) {
@@ -48,5 +77,9 @@ public class PaymentService {
 
     public boolean existsById(Long id) {
         return paymentRepository.existsById(id);
+    }
+
+    public String getNextPaymentNumber() {
+        return generateNextPaymentNumber();
     }
 }

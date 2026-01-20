@@ -1,18 +1,37 @@
 // Payments management
 const PAYMENTS_API_BASE = '/api/payments';
+const CUSTOMERS_API_BASE = '/api/customers';
 
 let editingPaymentId = null;
 
 document.addEventListener('DOMContentLoaded', () => {
     setupPaymentForm();
+    loadCustomersForSelect();
     setupAddPaymentButton();
 });
 
 // Modal Functions
-function openPaymentModal() {
+async function openPaymentModal() {
     resetPaymentForm();
     document.getElementById('payment-modal-title').textContent = 'Νέα Απόδειξη Πληρωμής';
     document.getElementById('payment-modal').style.display = 'flex';
+
+    // Auto-fill next payment number
+    await loadNextPaymentNumber();
+}
+
+async function loadNextPaymentNumber() {
+    try {
+        const response = await fetch(`${PAYMENTS_API_BASE}/next-number`);
+        const nextNumber = await response.text();
+        document.getElementById('payment-number').value = nextNumber;
+        // Make it read-only to prevent manual editing
+        document.getElementById('payment-number').readOnly = true;
+    } catch (error) {
+        console.error('Error loading next payment number:', error);
+        // If error, allow manual entry
+        document.getElementById('payment-number').readOnly = false;
+    }
 }
 
 function closePaymentModal() {
@@ -34,7 +53,33 @@ function setupPaymentForm() {
     form.addEventListener('submit', handlePaymentFormSubmit);
     printBtn.addEventListener('click', printCurrentPayment);
 
+    // Set today's date as default
     document.getElementById('payment-date').valueAsDate = new Date();
+
+    // Auto-fill signature2 when customer is selected
+    const customerSelect = document.getElementById('payment-customer');
+    if (customerSelect) {
+        customerSelect.addEventListener('change', function() {
+            const selectedOption = this.options[this.selectedIndex];
+            const customerName = selectedOption.getAttribute('data-name');
+            if (customerName) {
+                document.getElementById('payment-signature2').value = customerName;
+            }
+        });
+    }
+}
+
+async function loadCustomersForSelect() {
+    try {
+        const response = await fetch(CUSTOMERS_API_BASE);
+        const customers = await response.json();
+
+        const select = document.getElementById('payment-customer');
+        select.innerHTML = '<option value="">Επιλέξτε πελάτη</option>' +
+            customers.map(c => `<option value="${c.id}" data-name="${escapeHtml(c.name)}">${escapeHtml(c.name)}</option>`).join('');
+    } catch (error) {
+        console.error('Error loading customers:', error);
+    }
 }
 
 async function loadPayments() {
@@ -64,7 +109,7 @@ function displayPayments(payments) {
             </div>
             <div class="card-body">
                 <div class="card-info">
-                    <div class="info-item"><strong>Δικαιούχος:</strong> ${escapeHtml(payment.payeeName)}</div>
+                    <div class="info-item"><strong>Πελάτης:</strong> ${escapeHtml(payment.customerName || payment.payeeName)}</div>
                     <div class="info-item"><strong>Ημερομηνία:</strong> ${formatDate(payment.date)}</div>
                     <div class="info-item"><strong>Αιτία:</strong> ${escapeHtml(payment.reason)}</div>
                 </div>
@@ -81,8 +126,12 @@ function displayPayments(payments) {
 async function handlePaymentFormSubmit(e) {
     e.preventDefault();
 
+    const select = document.getElementById('payment-customer');
+    const selectedOption = select.options[select.selectedIndex];
+
     const payment = {
-        payeeName: document.getElementById('payment-payee').value,
+        customerId: parseInt(select.value),
+        customerName: selectedOption.getAttribute('data-name'),
         date: document.getElementById('payment-date').value,
         paymentNumber: document.getElementById('payment-number').value,
         amount: parseFloat(document.getElementById('payment-amount').value),
@@ -130,7 +179,7 @@ async function editPayment(id) {
         const response = await fetch(`${PAYMENTS_API_BASE}/${id}`);
         const payment = await response.json();
 
-        document.getElementById('payment-payee').value = payment.payeeName;
+        document.getElementById('payment-customer').value = payment.customerId;
         document.getElementById('payment-date').value = payment.date;
         document.getElementById('payment-number').value = payment.paymentNumber;
         document.getElementById('payment-amount').value = payment.amount;
@@ -166,6 +215,8 @@ function resetPaymentForm() {
     document.getElementById('payment-date').valueAsDate = new Date();
     editingPaymentId = null;
     document.getElementById('payment-submit-btn').textContent = 'Αποθήκευση';
+    // Prefill signature1 with company name
+    document.getElementById('payment-signature1').value = 'Korovesis Development';
 }
 
 async function printPayment(id) {
@@ -181,8 +232,11 @@ async function printPayment(id) {
 }
 
 function printCurrentPayment() {
+    const select = document.getElementById('payment-customer');
+    const selectedOption = select.options[select.selectedIndex];
+
     const payment = {
-        payeeName: document.getElementById('payment-payee').value,
+        customerName: selectedOption.getAttribute('data-name'),
         date: document.getElementById('payment-date').value,
         paymentNumber: document.getElementById('payment-number').value,
         amount: parseFloat(document.getElementById('payment-amount').value),
@@ -190,7 +244,7 @@ function printCurrentPayment() {
         signature1: document.getElementById('payment-signature1').value,
         signature2: document.getElementById('payment-signature2').value
     };
-    
+
     generatePrintablePayment(payment);
     window.print();
 }
@@ -201,12 +255,12 @@ function generatePrintablePayment(payment) {
         <div class="print-payment">
             <div class="print-header">
                 <div class="print-title">ΑΠΟΔΕΙΞΗ ΠΛΗΡΩΜΗΣ</div>
-                <div class="print-company">KOR CONSTRUCTIONS</div>
+                <div class="print-company">KOROVESIS DEVELOPMENT</div>
             </div>
             <div class="print-info">
                 <div class="print-row"><strong>Αριθμός:</strong> <span>${escapeHtml(payment.paymentNumber)}</span></div>
                 <div class="print-row"><strong>Ημερομηνία:</strong> <span>${formatDate(payment.date)}</span></div>
-                <div class="print-row"><strong>Δικαιούχος:</strong> <span>${escapeHtml(payment.payeeName)}</span></div>
+                <div class="print-row"><strong>Πελάτης:</strong> <span>${escapeHtml(payment.customerName || payment.payeeName)}</span></div>
                 <div class="print-row"><strong>Αιτία:</strong> <span>${escapeHtml(payment.reason)}</span></div>
             </div>
             <div class="print-amount">ΠΟΣΟ: ${formatCurrency(payment.amount)}</div>

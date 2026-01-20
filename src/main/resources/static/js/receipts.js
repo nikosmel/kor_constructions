@@ -215,6 +215,8 @@ function resetReceiptForm() {
     document.getElementById('receipt-date').valueAsDate = new Date();
     editingReceiptId = null;
     document.getElementById('receipt-submit-btn').textContent = 'Αποθήκευση';
+    // Prefill signature1 with company name
+    document.getElementById('receipt-signature1').value = 'Korovesis Development';
 }
 
 async function printReceipt(id) {

@@ -32,6 +32,11 @@ public class PaymentController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @GetMapping("/next-number")
+    public ResponseEntity<String> getNextPaymentNumber() {
+        return ResponseEntity.ok(paymentService.getNextPaymentNumber());
+    }
+
     @PostMapping
     public ResponseEntity<Payment> createPayment(@RequestBody Payment payment) {
         Payment created = paymentService.createPayment(payment);
