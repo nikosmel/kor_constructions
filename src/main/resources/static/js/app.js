@@ -1,5 +1,8 @@
 // Main application file - handles tab switching and initialization
 
+// Shared API endpoints
+const CUSTOMERS_API_BASE = '/api/customers';
+
 document.addEventListener('DOMContentLoaded', () => {
     initializeTabs();
     initializeModals();

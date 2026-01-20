@@ -1,6 +1,5 @@
 // Payments management
 const PAYMENTS_API_BASE = '/api/payments';
-const CUSTOMERS_API_BASE = '/api/customers';
 
 let editingPaymentId = null;
 

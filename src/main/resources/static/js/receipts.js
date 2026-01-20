@@ -1,6 +1,5 @@
 // Receipts management
 const RECEIPTS_API_BASE = '/api/receipts';
-const CUSTOMERS_API_BASE = '/api/customers';
 
 let editingReceiptId = null;
 
