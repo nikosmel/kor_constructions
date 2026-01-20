@@ -249,6 +249,10 @@ function printCurrentReceipt() {
 }
 
 function generatePrintableReceipt(receipt) {
+    // Clear both print templates to avoid showing multiple receipts
+    document.getElementById('print-receipt-template').innerHTML = '';
+    document.getElementById('print-payment-template').innerHTML = '';
+
     const template = document.getElementById('print-receipt-template');
     template.innerHTML = `
         <div class="print-receipt">
