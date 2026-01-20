@@ -32,7 +32,36 @@ public class ReceiptService {
 
     public Receipt createReceipt(Receipt receipt) {
         receipt.setId(null);
+
+        // Auto-generate receipt number if not provided
+        if (receipt.getReceiptNumber() == null || receipt.getReceiptNumber().trim().isEmpty()) {
+            receipt.setReceiptNumber(generateNextReceiptNumber());
+        }
+
         return receiptRepository.save(receipt);
+    }
+
+    private String generateNextReceiptNumber() {
+        Optional<Receipt> lastReceipt = receiptRepository.findTopByOrderByIdDesc();
+
+        if (lastReceipt.isPresent() && lastReceipt.get().getReceiptNumber() != null) {
+            String lastNumber = lastReceipt.get().getReceiptNumber();
+            try {
+                // Try to parse as integer and increment
+                int number = Integer.parseInt(lastNumber);
+                return String.valueOf(number + 1);
+            } catch (NumberFormatException e) {
+                // If not a number, try to extract number from end
+                String digits = lastNumber.replaceAll("\\D+", "");
+                if (!digits.isEmpty()) {
+                    int number = Integer.parseInt(digits);
+                    return String.valueOf(number + 1);
+                }
+            }
+        }
+
+        // Default starting number
+        return "1";
     }
 
     public Receipt updateReceipt(Long id, Receipt receipt) {
@@ -52,5 +81,9 @@ public class ReceiptService {
 
     public boolean existsById(Long id) {
         return receiptRepository.existsById(id);
+    }
+
+    public String getNextReceiptNumber() {
+        return generateNextReceiptNumber();
     }
 }

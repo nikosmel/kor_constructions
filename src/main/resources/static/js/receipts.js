@@ -11,10 +11,27 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // Modal Functions
-function openReceiptModal() {
+async function openReceiptModal() {
     resetReceiptForm();
     document.getElementById('receipt-modal-title').textContent = 'Νέα Απόδειξη Είσπραξης';
     document.getElementById('receipt-modal').style.display = 'flex';
+
+    // Auto-fill next receipt number
+    await loadNextReceiptNumber();
+}
+
+async function loadNextReceiptNumber() {
+    try {
+        const response = await fetch(`${RECEIPTS_API_BASE}/next-number`);
+        const nextNumber = await response.text();
+        document.getElementById('receipt-number').value = nextNumber;
+        // Make it read-only to prevent manual editing
+        document.getElementById('receipt-number').readOnly = true;
+    } catch (error) {
+        console.error('Error loading next receipt number:', error);
+        // If error, allow manual entry
+        document.getElementById('receipt-number').readOnly = false;
+    }
 }
 
 function closeReceiptModal() {
@@ -38,6 +55,18 @@ function setupReceiptForm() {
 
     // Set today's date as default
     document.getElementById('receipt-date').valueAsDate = new Date();
+
+    // Auto-fill signature2 when customer is selected
+    const customerSelect = document.getElementById('receipt-customer');
+    if (customerSelect) {
+        customerSelect.addEventListener('change', function() {
+            const selectedOption = this.options[this.selectedIndex];
+            const customerName = selectedOption.getAttribute('data-name');
+            if (customerName) {
+                document.getElementById('receipt-signature2').value = customerName;
+            }
+        });
+    }
 }
 
 async function loadCustomersForSelect() {

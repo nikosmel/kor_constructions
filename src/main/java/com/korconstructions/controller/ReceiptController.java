@@ -37,6 +37,11 @@ public class ReceiptController {
         return ResponseEntity.ok(receiptService.getReceiptsByCustomerId(customerId));
     }
 
+    @GetMapping("/next-number")
+    public ResponseEntity<String> getNextReceiptNumber() {
+        return ResponseEntity.ok(receiptService.getNextReceiptNumber());
+    }
+
     @PostMapping
     public ResponseEntity<Receipt> createReceipt(@RequestBody Receipt receipt) {
         Receipt created = receiptService.createReceipt(receipt);

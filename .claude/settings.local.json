@@ -19,7 +19,8 @@
       "Bash(~/.fly/bin/fly logs:*)",
       "Bash(~/.fly/bin/fly ssh console:*)",
       "Bash(~/.fly/bin/fly secrets:*)",
-      "Bash(~/.fly/bin/fly status)"
+      "Bash(~/.fly/bin/fly status)",
+      "Bash(~/.fly/bin/fly deploy:*)"
     ]
   }
 }
